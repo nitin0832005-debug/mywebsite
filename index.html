@@ -18,7 +18,6 @@
             overflow: hidden;
         }
 
-        /* 1. कार्ड की एंट्री का एनिमेशन */
         .card {
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
@@ -28,7 +27,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             max-width: 400px;
             width: 90%;
-            animation: cardEntry 1s ease-out; /* कार्ड खुलते ही एनिमेट होगा */
+            animation: cardEntry 1s ease-out;
         }
 
         h1 {
@@ -38,16 +37,14 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* 2. सुविचार बदलने का स्मूथ एनिमेशन */
         p {
             font-size: 1.5rem;
             line-height: 1.6;
             font-style: italic;
             min-height: 80px;
-            transition: opacity 0.3s ease, transform 0.3s ease; /* स्मूथ इफ़ेक्ट के लिए */
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        /* जब विचार बदलेगा तब यह क्लास एक्टिव होगी */
         .fade-effect {
             opacity: 0;
             transform: translateY(-10px);
@@ -79,7 +76,6 @@
             box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
         }
 
-        /* बटन्स पर उंगली रखने (Hover) का एनिमेशन */
         .btn:hover, .btn-copy:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
@@ -89,7 +85,6 @@
             transform: translateY(1px) scale(0.95);
         }
 
-        /* कार्ड एंट्री का बैकग्राउंड लॉजिक (Keyframes) */
         @keyframes cardEntry {
             0% {
                 opacity: 0;
@@ -125,16 +120,11 @@
 
         function changeQuote() {
             const quoteElement = document.getElementById("quote");
-            
-            // पहले टेक्स्ट को धीरे से छुपाओ (Fade Out)
             quoteElement.classList.add("fade-effect");
             
             setTimeout(() => {
-                // 0.3 सेकंड बाद नया विचार लाओ
                 const randomIndex = Math.floor(Math.random() * quotes.length);
                 quoteElement.innerText = quotes[randomIndex];
-                
-                // नए विचार को धीरे से वापस दिखाओ (Fade In)
                 quoteElement.classList.remove("fade-effect");
                 document.getElementById("copyBtn").innerText = "कॉपी करें";
             }, 300);
