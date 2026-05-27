@@ -36,23 +36,33 @@
             font-size: 1.5rem;
             line-height: 1.6;
             font-style: italic;
-            min-height: 80px; /* बॉक्स का साइज फिक्स रखने के लिए */
+            min-height: 80px;
         }
-        /* नया बटन स्टाइल */
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
         .btn {
             background: #00f2fe;
             color: #1e3c72;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-size: 1rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
             transition: 0.3s;
-            margin-top: 15px;
         }
-        .btn:active {
+        /* कॉपी बटन का थोड़ा अलग कलर */
+        .btn-copy {
+            background: #4facfe;
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+        .btn:active, .btn-copy:active {
             transform: scale(0.95);
         }
     </style>
@@ -62,11 +72,14 @@
     <div class="card">
         <h1>विचार सुविचार</h1>
         <p id="quote">"आज की मेहनत, कल का सवेरा लाएगी। बिना रुके आगे बढ़ते रहो!"</p>
-        <button class="btn" onclick="changeQuote()">नया विचार</button>
+        
+        <div class="btn-container">
+            <button class="btn" onclick="changeQuote()">नया विचार</button>
+            <button class="btn btn-copy" onclick="copyQuote()" id="copyBtn">कॉपी करें</button>
+        </div>
     </div>
 
     <script>
-        // यहाँ हमारी सुविचारों की लिस्ट है
         const quotes = [
             '"आज की मेहनत, कल का सवेरा लाएगी। बिना रुके आगे बढ़ते रहो!"',
             '"जीतने का असली मज़ा तब है, जब सब आपके हारने का इंतज़ार कर रहे हों।"',
@@ -75,10 +88,22 @@
             '"वक्त आपका है, चाहो तो सोना बना लो या चाहो तो सोने में गुज़ार दो।"'
         ];
 
-        // बटन दबाने पर विचार बदलने वाला जादुई फंक्शन (JavaScript)
         function changeQuote() {
             const randomIndex = Math.floor(Math.random() * quotes.length);
             document.getElementById("quote").innerText = quotes[randomIndex];
+            // नया विचार आते ही कॉपी बटन को वापस नॉर्मल कर दें
+            document.getElementById("copyBtn").innerText = "कॉपी करें";
+        }
+
+        // टेक्स्ट कॉपी करने वाला नया जादुई कोड
+        function copyQuote() {
+            const quoteText = document.getElementById("quote").innerText;
+            navigator.clipboard.writeText(quoteText).then(() => {
+                const copyBtn = document.getElementById("copyBtn");
+                copyBtn.innerText = "✓ कॉपी हो गया!";
+            }).catch(err => {
+                alert("कॉपी करने में कोई दिक्कत आई!");
+            });
         }
     </script>
 
