@@ -5,143 +5,221 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>विचार सुविचार</title>
     <style>
-        body {
+        /* सभी डिफ़ॉल्ट वेरिएबल्स (Theme Colors) */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #1e3c72, #2a5298);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --title-color: #00f2fe;
+            --btn-new: #00f2fe;
+            --btn-copy: #3a7bd5;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        /* डार्क मोड के लिए अलग रंग */
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --card-bg: rgba(0, 0, 0, 0.4);
+            --text-color: #e0e0e0;
+            --title-color: #00ffcc;
+            --shadow: rgba(0, 0, 0, 0.6);
+        }
+
+        /* लाइट मोड के लिए अलग रंग */
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #ff9a9e, #fecfef);
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --text-color: #333333;
+            --title-color: #ff4e50;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
+            transition: all 0.4s ease;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-            overflow: hidden;
+            padding: 20px;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+        /* थीम बदलने वाला टॉप बटन */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-color);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        /* सुविचार कार्ड स्टाइल */
+        .quote-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 15px 35px var(--shadow);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 400px;
-            width: 90%;
-            animation: cardEntry 1s ease-out;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #00f2fe;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 36px;
+            margin-bottom: 25px;
+            color: var(--title-color);
+            text-shadow: 0 2px 10px var(--shadow);
         }
 
         p {
-            font-size: 1.5rem;
+            font-size: 20px;
             line-height: 1.6;
+            margin-bottom: 35px;
+            color: var(--text-color);
             font-style: italic;
-            min-height: 80px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .fade-effect {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
+        /* बटन कंटेनर */
         .btn-container {
             display: flex;
+            justify-content: space-around;
             gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
         }
 
-        .btn {
-            background: #00f2fe;
-            color: #1e3c72;
-            border: none;
-            padding: 12px 20px;
-            font-size: 1rem;
+        button.action-btn {
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: bold;
-            border-radius: 25px;
+            border: none;
+            border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .btn-copy {
-            background: #4facfe;
             color: white;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 5px 15px var(--shadow);
+            flex: 1;
         }
 
-        .btn:hover, .btn-copy:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
+        #new-quote-btn {
+            background: var(--btn-new);
+            color: #121212;
         }
 
-        .btn:active, .btn-copy:active {
-            transform: translateY(1px) scale(0.95);
+        #copy-btn {
+            background: var(--btn-copy);
         }
 
-        @keyframes cardEntry {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        button:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
+    <!-- थीम बदलने का कड़क बटन -->
+    <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()">🌙 डार्क मोड</button>
+
+    <div class="quote-card">
         <h1>विचार सुविचार</h1>
         <p id="quote">"आज की मेहनत, कल का सवेरा लाएगी। बिना रुके आगे बढ़ते रहो!"</p>
         
         <div class="btn-container">
-            <button class="btn" onclick="changeQuote()">नया विचार</button>
-            <button class="btn btn-copy" onclick="copyQuote()" id="copyBtn">कॉपी करें</button>
+            <button class="action-btn" id="new-quote-btn" onclick="getNewQuote()">नया विचार</button>
+            <button class="action-btn" id="copy-btn" onclick="copyQuote()">कॉपी करें</button>
         </div>
     </div>
 
     <script>
+        // बेहतरीन सुविचारों की लिस्ट
         const quotes = [
-            '"आज की मेहनत, कल का सवेरा लाएगी। बिना रुके आगे बढ़ते रहो!"',
-            '"जीतने का असली मज़ा तब है, जब सब आपके हारने का इंतज़ार कर रहे हों।"',
-            '"सफलता की शुरुआत हमेशा एक छोटे कदम से होती है।"',
-            '"जो मुस्कुरा रहा है उसे दर्द ने पाला होगा, जो चल रहा है उसके पाँव में छाला होगा।"',
-            '"वक्त आपका है, चाहो तो सोना बना लो या चाहो तो सोने में गुज़ार दो।"'
+            "\"आज की मेहनत, कल का सवेरा लाएगी। बिना रुके आगे बढ़ते रहो!\"",
+            "\"वक्त आपका है, चाहो तो सोना बना लो या चाहो तो सोने में गुज़ार दो।\"",
+            "\"जो मुस्कुरा रहा है उसे दर्द ने पाला होगा, जो चल रहा है उसके पाँव में छाला होगा।\"",
+            "\"जीतने का असली मज़ा तब है, जब सब आपके हारने का इंतजार कर रहे हों।\"",
+            "\"सफलता की शुरुआत हमेशा एक छोटे कदम से होती है।\"",
+            "\"कठिन रास्तों से घबराना मत, क्योंकि कठिन रास्ते हमेशा खूबसूरत मंज़िल की ओर ले जाते हैं।\"",
+            "\"सोच का ही फर्क होता है वरना समस्याएं हमें कमजोर नहीं, बल्कि मजबूत बनाने आती हैं।\""
         ];
 
-        function changeQuote() {
-            const quoteElement = document.getElementById("quote");
-            quoteElement.classList.add("fade-effect");
+        // जादुई बैकग्राउंड ग्रेडिएंट्स की लिस्ट (हर क्लिक पर बदलने के लिए)
+        const gradients = [
+            "linear-gradient(135deg, #1e3c72, #2a5298)",
+            "linear-gradient(135deg, #667eea, #764ba2)",
+            "linear-gradient(135deg, #11998e, #38ef7d)",
+            "linear-gradient(135deg, #fc4a1a, #f7b733)",
+            "linear-gradient(135deg, #7f00ff, #e100ff)",
+            "linear-gradient(135deg, #00c6ff, #0072ff)"
+        ];
+
+        let currentTheme = "default";
+
+        // 1. नया विचार और बैकग्राउंड बदलने का फंक्शन
+        function getNewQuote() {
+            // रैंडम सुविचार चुनना
+            const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('quote').innerText = quotes[randomQuoteIndex];
             
-            setTimeout(() => {
-                const randomIndex = Math.floor(Math.random() * quotes.length);
-                quoteElement.innerText = quotes[randomIndex];
-                quoteElement.classList.remove("fade-effect");
-                document.getElementById("copyBtn").innerText = "कॉपी करें";
-            }, 300);
+            // अगर थीम डिफ़ॉल्ट है, तभी बैकग्राउंड कलर बदलेगा (लाइट/डार्क में नहीं ताकि लुक खराब न हो)
+            if (currentTheme === "default") {
+                const randomGradIndex = Math.floor(Math.random() * gradients.length);
+                document.body.style.background = gradients[randomGradIndex];
+            }
         }
 
+        // 2. कॉपी करने का परफेक्ट फंक्शन
         function copyQuote() {
-            const quoteText = document.getElementById("quote").innerText;
+            const quoteText = document.getElementById('quote').innerText;
             navigator.clipboard.writeText(quoteText).then(() => {
-                const copyBtn = document.getElementById("copyBtn");
-                copyBtn.innerText = "✓ कॉपी हो गया!";
-            }).catch(err => {
-                alert("कॉपी करने में कोई दिक्कत आई!");
+                const copyBtn = document.getElementById('copy-btn');
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = "कॉपी हो गया! ✓";
+                setTimeout(() => { copyBtn.innerText = originalText; }, 2000);
             });
         }
-    </script>
 
+        // 3. थीम बदलने वाला (Theme Changer) फंक्शन
+        function toggleTheme() {
+            const body = document.documentElement;
+            const themeBtn = document.getElementById('theme-btn');
+            
+            if (currentTheme === "default") {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.innerText = "☀️ लाइट मोड";
+                currentTheme = "dark";
+                document.body.style.background = ""; // सीएसएस वेरिएबल लागू करने के लिए
+            } else if (currentTheme === "dark") {
+                body.setAttribute('data-theme', 'light');
+                themeBtn.innerText = "🔵 रंग-बिरंगा मोड";
+                currentTheme = "light";
+                document.body.style.background = "";
+            } else {
+                body.removeAttribute('data-theme');
+                themeBtn.innerText = "🌙 डार्क मोड";
+                currentTheme = "default";
+                document.body.style.background = gradients[0];
+            }
+        }
+    </script>
 </body>
 </html>
+
 
         
