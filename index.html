@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>विचार सुविचार</title>
     <style>
-        /* सभी डिफ़ॉल्ट वेरिएबल्स (Theme Colors) */
         :root {
             --bg-gradient: linear-gradient(135deg, #1e3c72, #2a5298);
             --card-bg: rgba(255, 255, 255, 0.1);
@@ -13,10 +12,10 @@
             --title-color: #00f2fe;
             --btn-new: #00f2fe;
             --btn-copy: #3a7bd5;
+            --btn-speak: #ff9a9e;
             --shadow: rgba(0, 0, 0, 0.3);
         }
 
-        /* डार्क मोड के लिए अलग रंग */
         [data-theme="dark"] {
             --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             --card-bg: rgba(0, 0, 0, 0.4);
@@ -25,7 +24,6 @@
             --shadow: rgba(0, 0, 0, 0.6);
         }
 
-        /* लाइट मोड के लिए अलग रंग */
         [data-theme="light"] {
             --bg-gradient: linear-gradient(135deg, #ff9a9e, #fecfef);
             --card-bg: rgba(255, 255, 255, 0.6);
@@ -51,7 +49,6 @@
             padding: 20px;
         }
 
-        /* थीम बदलने वाला टॉप बटन */
         .theme-toggle-btn {
             position: absolute;
             top: 20px;
@@ -66,7 +63,6 @@
             box-shadow: 0 4px 10px var(--shadow);
         }
 
-        /* सुविचार कार्ड स्टाइल */
         .quote-card {
             background: var(--card-bg);
             backdrop-filter: blur(15px);
@@ -74,7 +70,7 @@
             padding: 40px 30px;
             border-radius: 25px;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             text-align: center;
             box-shadow: 0 15px 35px var(--shadow);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -99,16 +95,16 @@
             justify-content: center;
         }
 
-        /* बटन कंटेनर */
         .btn-container {
             display: flex;
             justify-content: space-around;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         button.action-btn {
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 12px 20px;
+            font-size: 15px;
             font-weight: bold;
             border: none;
             border-radius: 50px;
@@ -116,6 +112,7 @@
             color: white;
             box-shadow: 0 5px 15px var(--shadow);
             flex: 1;
+            min-width: 120px;
         }
 
         #new-quote-btn {
@@ -127,6 +124,11 @@
             background: var(--btn-copy);
         }
 
+        #speak-btn {
+            background: var(--btn-speak);
+            color: #121212;
+        }
+
         button:active {
             transform: scale(0.95);
         }
@@ -134,7 +136,6 @@
 </head>
 <body>
 
-    <!-- थीम बदलने का कड़क बटन -->
     <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()">🌙 डार्क मोड</button>
 
     <div class="quote-card">
@@ -143,12 +144,12 @@
         
         <div class="btn-container">
             <button class="action-btn" id="new-quote-btn" onclick="getNewQuote()">नया विचार</button>
+            <button class="action-btn" id="speak-btn" onclick="speakQuote()">🔊 सुनें</button>
             <button class="action-btn" id="copy-btn" onclick="copyQuote()">कॉपी करें</button>
         </div>
     </div>
 
     <script>
-        // बेहतरीन सुविचारों की लिस्ट
         const quotes = [
             "\"आज की मेहनत, कल का सवेरा लाएगी। बिना रुके आगे बढ़ते रहो!\"",
             "\"वक्त आपका है, चाहो तो सोना बना लो या चाहो तो सोने में गुज़ार दो।\"",
@@ -159,7 +160,6 @@
             "\"सोच का ही फर्क होता है वरना समस्याएं हमें कमजोर नहीं, बल्कि मजबूत बनाने आती हैं।\""
         ];
 
-        // जादुई बैकग्राउंड ग्रेडिएंट्स की लिस्ट (हर क्लिक पर बदलने के लिए)
         const gradients = [
             "linear-gradient(135deg, #1e3c72, #2a5298)",
             "linear-gradient(135deg, #667eea, #764ba2)",
@@ -171,20 +171,19 @@
 
         let currentTheme = "default";
 
-        // 1. नया विचार और बैकग्राउंड बदलने का फंक्शन
         function getNewQuote() {
-            // रैंडम सुविचार चुनना
+            // अगर कुछ बोल रहा हो तो पहले उसे रोकें
+            window.speechSynthesis.cancel();
+            
             const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
             document.getElementById('quote').innerText = quotes[randomQuoteIndex];
             
-            // अगर थीम डिफ़ॉल्ट है, तभी बैकग्राउंड कलर बदलेगा (लाइट/डार्क में नहीं ताकि लुक खराब न हो)
             if (currentTheme === "default") {
                 const randomGradIndex = Math.floor(Math.random() * gradients.length);
                 document.body.style.background = gradients[randomGradIndex];
             }
         }
 
-        // 2. कॉपी करने का परफेक्ट फंक्शन
         function copyQuote() {
             const quoteText = document.getElementById('quote').innerText;
             navigator.clipboard.writeText(quoteText).then(() => {
@@ -195,7 +194,24 @@
             });
         }
 
-        // 3. थीम बदलने वाला (Theme Changer) फंक्शन
+        // 🔊 सुविचार बोलकर सुनाने का कड़क फंक्शन
+        function speakQuote() {
+            // अगर पहले से कुछ बोल रहा है तो रोकें
+            window.speechSynthesis.cancel();
+            
+            const quoteText = document.getElementById('quote').innerText;
+            
+            // क्लीन टेक्स्ट (कोटेशन मार्क्स हटाकर)
+            const cleanText = quoteText.replace(/['"]+/g, '');
+            
+            const speech = new SpeechSynthesisUtterance(cleanText);
+            speech.lang = 'hi-IN'; // हिंदी आवाज़ सेट करना
+            speech.pitch = 1.1;    // आवाज़ की टोन
+            speech.rate = 0.95;    // बोलने की स्पीड
+            
+            window.speechSynthesis.speak(speech);
+        }
+
         function toggleTheme() {
             const body = document.documentElement;
             const themeBtn = document.getElementById('theme-btn');
@@ -204,7 +220,7 @@
                 body.setAttribute('data-theme', 'dark');
                 themeBtn.innerText = "☀️ लाइट मोड";
                 currentTheme = "dark";
-                document.body.style.background = ""; // सीएसएस वेरिएबल लागू करने के लिए
+                document.body.style.background = "";
             } else if (currentTheme === "dark") {
                 body.setAttribute('data-theme', 'light');
                 themeBtn.innerText = "🔵 रंग-बिरंगा मोड";
@@ -220,6 +236,7 @@
     </script>
 </body>
 </html>
+
 
 
         
