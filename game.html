@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF Mind Reader: ग्रैंडमास्टर चैलेंज</title>
+    <title>FF Mind Reader: ओबी53 ग्रैंडमास्टर एडिशन</title>
     <style>
         :root {
             --bg-color: #0b0c10;
@@ -54,7 +54,7 @@
         .items-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 30px;
         }
 
@@ -62,10 +62,19 @@
             background: #24252a;
             border: 1px solid #444;
             border-radius: 10px;
-            padding: 15px;
-            font-size: 1.1rem;
+            padding: 12px 5px;
+            font-size: 1rem;
             font-weight: bold;
             color: var(--ff-yellow);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .item-card.selected {
+            border-color: var(--ff-yellow);
+            background: #ff4500;
+            color: white;
+            box-shadow: 0 0 10px var(--ff-orange);
         }
 
         .btn {
@@ -87,6 +96,16 @@
             box-shadow: 0 0 15px var(--ff-orange);
         }
 
+        .result-box {
+            border: 2px dashed var(--ff-yellow);
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.5);
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
         .result-emoji {
             font-size: 4.5rem;
             animation: glow 1s ease-in-out infinite alternate;
@@ -102,66 +121,78 @@
 
     <div class="game-box" id="gameBox">
         <h1>FF MIND READER 🧠💥</h1>
-        <p style="color: #ff4500; font-weight: bold; letter-spacing: 2px;">GRANDMASTER CHALLENGE</p>
+        <p style="color: #ff4500; font-weight: bold; letter-spacing: 2px;">OB53 GRANDMASTER EDITION</p>
         <hr style="border: 1px solid var(--ff-orange); margin-bottom: 20px;">
         
         <div id="content">
             <!-- Step 1 -->
-            <p class="instruction">नीचे दिए गए फ्री फायर आइटम्स में से कोई भी <b>एक आइटम</b> अपने मन में सोच लो भाई, और मुझे मत बताना! सोच लिया?</p>
+            <p class="instruction">नीचे दिए गए कड़क आइटम्स में से कोई भी <b>एक आइटम</b> अपने मन में चुन लो भाई और उसपर क्लिक करो!</p>
             <div class="items-grid">
-                <div class="item-card">🔥 Criminal</div>
-                <div class="item-card">⚡ MP40</div>
-                <div class="item-card">👑 Cobra</div>
-                <div class="item-card">🧊 Gloo Wall</div>
-                <div class="item-card">🩸 M1014</div>
-                <div class="item-card">💎 Evo Scar</div>
+                <div class="item-card" onclick="selectItem(this, '🔴 Red Criminal')">🔴 Criminal</div>
+                <div class="item-card" onclick="selectItem(this, '⚡ Cobra MP40')">⚡ Cobra MP40</div>
+                <div class="item-card" onclick="selectItem(this, '👑 Bunny Bundle')">👑 Bunny</div>
+                <div class="item-card" onclick="selectItem(this, '🧊 Angelic Pant')">🧊 Angelic</div>
+                <div class="item-card" onclick="selectItem(this, '🔥 Draco AK')">🔥 Draco AK</div>
+                <div class="item-card" onclick="selectItem(this, '💎 Hip Hop Bundle')">💎 Hip Hop</div>
             </div>
-            <button class="btn" onclick="nextStep(2)">हाँ भाई, सोच लिया! ➔</button>
+            <button class="btn" onclick="startHack()">हाँ भाई, सिलेक्ट कर लिया! ➔</button>
         </div>
     </div>
 
     <script>
-        let currentStep = 1;
+        let chosenItem = "";
 
-        function nextStep(step) {
-            const content = document.getElementById('content');
+        function selectItem(element, name) {
+            // Remove selection from all cards
+            const cards = document.querySelectorAll('.item-card');
+            cards.forEach(card => card.classList.remove('selected'));
             
-            if (step === 2) {
-                content.innerHTML = `
-                    <p class="instruction">अब जो भी आइटम आपने सोचा है, उसके अक्षरों (Letters) को गिनो। <br><br>जैसे: <b>MP40</b> में 4 अक्षर हैं, <b>Cobra</b> में 5 अक्षर हैं। मन में गिन लो भाई!</p>
-                    <button class="btn" onclick="nextStep(3)">गिन लिया भाई ➔</button>
-                `;
-            } else if (step === 3) {
-                content.innerHTML = `
-                    <p class="instruction">अब अपने उस नंबर में <b>3 जोड़ दो (Add 3)</b>। <br><br> जो भी नया नंबर आया, उसे याद रखना!</p>
-                    <button class="btn" onclick="nextStep(4)">जोड़ दिया ➔</button>
-                `;
-            } else if (step === 4) {
-                content.innerHTML = `
-                    <p class="instruction">अब आख़िरी बार... उस नए नंबर में से <b>2 घटा दो (Subtract 2)</b>। <br><br>अब जो फाइनल नंबर आपके पास बचा है, हमारी वेबसाइट उसे पढ़ने जा रही है...</p>
-                    <button class="btn" onclick="showMagic()">दिमाग पढ़ो भाई! ⚡</button>
-                `;
-            }
+            // Add selection to clicked card
+            element.classList.add('selected');
+            chosenItem = name;
         }
 
-        function showMagic() {
+        function startHack() {
+            if (!chosenItem) {
+                alert("पहले कोई एक आइटम सिलेक्ट तो करो नितिन भाई! 😉");
+                return;
+            }
+
             const content = document.getElementById('content');
             content.innerHTML = `
-                <p class="instruction" style="color: #ffcc00; font-weight: bold;">हैकिंग माइंड वेव्स... 📡</p>
-                <div class="instruction">लोडिंग डेटा...</div>
+                <p class="instruction" style="color: #ffcc00; font-weight: bold;">माइंड वेव्स स्कैन की जा रही हैं... 📡</p>
+                <p class="instruction" style="color: #ff4500;">आपके रेडमी 8 फोन से सिग्नल्स मैच हो रहे हैं... 📱</p>
+                <div class="instruction" style="font-size: 1rem; color: #888;">डेटा पैकेट्स डिक्रिप्ट हो रहे हैं... 50%</div>
+            `;
+            
+            setTimeout(() => {
+                content.innerHTML = `
+                    <p class="instruction" style="color: #ffcc00; font-weight: bold;">हैकिंग ऑलमोस्ट कम्प्लीट! 💻</p>
+                    <p class="instruction">दिमाग की कोडिंग डिकोड हो चुकी है। परिणाम देखने के लिए नीचे बटन दबाएं!</p>
+                    <button class="btn" onclick="showFinalResult()">नतीजा देखो भाई! ⚡</button>
+                `;
+            }, 2000);
+        }
+
+        function showFinalResult() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <p class="instruction" style="color: #ffcc00; font-weight: bold;">फ्री फायर सर्वर कनेक्टेड... 🎮</p>
+                <div class="instruction">लोडिंग रिजल्ट...</div>
             `;
             
             setTimeout(() => {
                 content.innerHTML = `
                     <div class="result-emoji">👑</div>
                     <h2 style="color: var(--ff-yellow); margin-top: 10px;">BOOYAH! 🎉</h2>
-                    <p class="instruction">आपके दिमाग का फाइनल नंबर <b>6</b> या <b>5</b> के आस-पास था और आपने <b>Cobra Bundle या MP40</b> के बारे में सोचा था! 😉🔥</p>
+                    <p class="instruction">नितिन भाई का जादू! आपके दोस्त ने मन में यही चुना था:</p>
+                    <div class="result-box">🔥 ${chosenItem} 🔥</div>
+                    <p class="instruction" style="font-size: 1rem; color: #aaa;">है ना एकदम ग्रैंडमास्टर लेवल कोडिंग? 😉</p>
                     <button class="btn" onclick="location.reload()">दोबारा खेलें 🔄</button>
                 `;
-            }, 2000);
+            }, 1500);
         }
     </script>
 
 </body>
-  </html>
-  
+</html>
