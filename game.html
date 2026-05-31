@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Mind Reader: ग्रैंडमास्टर चैलेंज</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --ff-orange: #ff4500;
+            --ff-yellow: #ffcc00;
+            --card-bg: rgba(26, 26, 36, 0.9);
+            --text-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1a0f00, #000000);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .game-box {
+            background: var(--card-bg);
+            border: 2px solid var(--ff-orange);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.4);
+            margin-top: 40px;
+        }
+
+        h1 {
+            color: var(--ff-yellow);
+            text-shadow: 2px 2px #ff4500;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .item-card {
+            background: #24252a;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--ff-yellow);
+        }
+
+        .btn {
+            background: linear-gradient(180deg, #ff8c00, #ff4500);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.3);
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 15px var(--ff-orange);
+        }
+
+        .result-emoji {
+            font-size: 4.5rem;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ffcc00; }
+            to { text-shadow: 0 0 20px #ff4500; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-box" id="gameBox">
+        <h1>FF MIND READER 🧠💥</h1>
+        <p style="color: #ff4500; font-weight: bold; letter-spacing: 2px;">GRANDMASTER CHALLENGE</p>
+        <hr style="border: 1px solid var(--ff-orange); margin-bottom: 20px;">
+        
+        <div id="content">
+            <!-- Step 1 -->
+            <p class="instruction">नीचे दिए गए फ्री फायर आइटम्स में से कोई भी <b>एक आइटम</b> अपने मन में सोच लो भाई, और मुझे मत बताना! सोच लिया?</p>
+            <div class="items-grid">
+                <div class="item-card">🔥 Criminal</div>
+                <div class="item-card">⚡ MP40</div>
+                <div class="item-card">👑 Cobra</div>
+                <div class="item-card">🧊 Gloo Wall</div>
+                <div class="item-card">🩸 M1014</div>
+                <div class="item-card">💎 Evo Scar</div>
+            </div>
+            <button class="btn" onclick="nextStep(2)">हाँ भाई, सोच लिया! ➔</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            const content = document.getElementById('content');
+            
+            if (step === 2) {
+                content.innerHTML = `
+                    <p class="instruction">अब जो भी आइटम आपने सोचा है, उसके अक्षरों (Letters) को गिनो। <br><br>जैसे: <b>MP40</b> में 4 अक्षर हैं, <b>Cobra</b> में 5 अक्षर हैं। मन में गिन लो भाई!</p>
+                    <button class="btn" onclick="nextStep(3)">गिन लिया भाई ➔</button>
+                `;
+            } else if (step === 3) {
+                content.innerHTML = `
+                    <p class="instruction">अब अपने उस नंबर में <b>3 जोड़ दो (Add 3)</b>। <br><br> जो भी नया नंबर आया, उसे याद रखना!</p>
+                    <button class="btn" onclick="nextStep(4)">जोड़ दिया ➔</button>
+                `;
+            } else if (step === 4) {
+                content.innerHTML = `
+                    <p class="instruction">अब आख़िरी बार... उस नए नंबर में से <b>2 घटा दो (Subtract 2)</b>। <br><br>अब जो फाइनल नंबर आपके पास बचा है, हमारी वेबसाइट उसे पढ़ने जा रही है...</p>
+                    <button class="btn" onclick="showMagic()">दिमाग पढ़ो भाई! ⚡</button>
+                `;
+            }
+        }
+
+        function showMagic() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <p class="instruction" style="color: #ffcc00; font-weight: bold;">हैकिंग माइंड वेव्स... 📡</p>
+                <div class="instruction">लोडिंग डेटा...</div>
+            `;
+            
+            setTimeout(() => {
+                content.innerHTML = `
+                    <div class="result-emoji">👑</div>
+                    <h2 style="color: var(--ff-yellow); margin-top: 10px;">BOOYAH! 🎉</h2>
+                    <p class="instruction">आपके दिमाग का फाइनल नंबर <b>6</b> या <b>5</b> के आस-पास था और आपने <b>Cobra Bundle या MP40</b> के बारे में सोचा था! 😉🔥</p>
+                    <button class="btn" onclick="location.reload()">दोबारा खेलें 🔄</button>
+                `;
+            }, 2000);
+        }
+    </script>
+
+</body>
+  </html>
+  
