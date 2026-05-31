@@ -111,6 +111,22 @@
             animation: glow 1s ease-in-out infinite alternate;
         }
 
+        .speak-btn {
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px #00ffcc;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         @keyframes glow {
             from { text-shadow: 0 0 10px #ffcc00; }
             to { text-shadow: 0 0 20px #ff4500; }
@@ -128,12 +144,12 @@
             <!-- Step 1 -->
             <p class="instruction">नीचे दिए गए कड़क आइटम्स में से कोई भी <b>एक आइटम</b> अपने मन में चुन लो भाई और उसपर क्लिक करो!</p>
             <div class="items-grid">
-                <div class="item-card" onclick="selectItem(this, '🔴 Red Criminal')">🔴 Criminal</div>
-                <div class="item-card" onclick="selectItem(this, '⚡ Cobra MP40')">⚡ Cobra MP40</div>
-                <div class="item-card" onclick="selectItem(this, '👑 Bunny Bundle')">👑 Bunny</div>
-                <div class="item-card" onclick="selectItem(this, '🧊 Angelic Pant')">🧊 Angelic</div>
-                <div class="item-card" onclick="selectItem(this, '🔥 Draco AK')">🔥 Draco AK</div>
-                <div class="item-card" onclick="selectItem(this, '💎 Hip Hop Bundle')">💎 Hip Hop</div>
+                <div class="item-card" onclick="selectItem(this, 'Red Criminal')">🔴 Criminal</div>
+                <div class="item-card" onclick="selectItem(this, 'Cobra MP40')">⚡ Cobra MP40</div>
+                <div class="item-card" onclick="selectItem(this, 'Bunny Bundle')">👑 Bunny</div>
+                <div class="item-card" onclick="selectItem(this, 'Angelic Pant')">🧊 Angelic</div>
+                <div class="item-card" onclick="selectItem(this, 'Draco AK')">🔥 Draco AK</div>
+                <div class="item-card" onclick="selectItem(this, 'Hip Hop Bundle')">💎 Hip Hop</div>
             </div>
             <button class="btn" onclick="startHack()">हाँ भाई, सिलेक्ट कर लिया! ➔</button>
         </div>
@@ -143,11 +159,8 @@
         let chosenItem = "";
 
         function selectItem(element, name) {
-            // Remove selection from all cards
             const cards = document.querySelectorAll('.item-card');
             cards.forEach(card => card.classList.remove('selected'));
-            
-            // Add selection to clicked card
             element.classList.add('selected');
             chosenItem = name;
         }
@@ -187,10 +200,29 @@
                     <h2 style="color: var(--ff-yellow); margin-top: 10px;">BOOYAH! 🎉</h2>
                     <p class="instruction">नितिन भाई का जादू! आपके दोस्त ने मन में यही चुना था:</p>
                     <div class="result-box">🔥 ${chosenItem} 🔥</div>
+                    
+                    <!-- वॉइस वाला बटन -->
+                    <button class="speak-btn" onclick="speakResult()">🔊 आवाज सुनो भाई!</button>
+                    
                     <p class="instruction" style="font-size: 1rem; color: #aaa;">है ना एकदम ग्रैंडमास्टर लेवल कोडिंग? 😉</p>
                     <button class="btn" onclick="location.reload()">दोबारा खेलें 🔄</button>
                 `;
+                // नतीजा आते ही अपने आप भी एक बार आवाज गूंजेगी!
+                speakResult();
             }, 1500);
+        }
+
+        function speakResult() {
+            if ('speechSynthesis' in window) {
+                // हिंदी में बुलवाने के लिए टेक्स्ट तैयार किया
+                let textToSpeak = `बूयाह! नितिन भाई का जादू! आपके दोस्त ने मन में चुना था, ${chosenItem}!`;
+                let utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'hi-IN'; // हिंदी भाषा सेट की
+                utterance.rate = 0.9;     // थोड़ी नॉर्मल और कड़क स्पीड
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("भाई, आपके ब्राउज़र में वॉइस सपोर्ट नहीं कर रहा है!");
+            }
         }
     </script>
 
