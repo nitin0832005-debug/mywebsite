@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>नितिन डिजिटल स्टोर</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e1b4b);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-color: #ffffff;
+            --accent-color: #00f2fe;
+            --btn-color: #9333ea;
+            --btn-hover: #a855f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .store-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .product-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .buy-btn {
+            background: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+
+        .buy-btn:hover {
+            background: var(--btn-hover);
+        }
+
+        .buy-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Nitin's Digital Store 🚀</h1>
+        <p>प्रीमियम डिजिटल प्रोडक्ट्स - तुरंत खरीदें और डाउनलोड करें</p>
+    </header>
+
+    <div class="store-container">
+        <!-- प्रोडक्ट 1 -->
+        <div class="product-card">
+            <div class="product-icon">🎨</div>
+            <div class="product-title">AI 8K Portrait Prompts</div>
+            <div class="product-desc">प्रोफेशनल सूट और एटीट्यूड फोटोज़ जनरेट करने के लिए कड़क प्रॉम्प्ट्स पीडीएफ।</div>
+            <div class="product-price">₹199</div>
+            <button class="buy-btn" onclick="buyProduct('AI 8K Portrait Prompts')">अभी खरीदें</button>
+        </div>
+
+        <!-- प्रोडक्ट 2 -->
+        <div class="product-card">
+            <div class="product-icon">🎮</div>
+            <div class="product-title">Gaming Wallpaper Pack</div>
+            <div class="product-desc">आपके रेडमी फोन के लिए 4K अल्ट्रा-क्लियर गेमिंग वॉलपेपर्स।</div>
+            <div class="product-price">₹99</div>
+            <button class="buy-btn" onclick="buyProduct('Gaming Wallpaper Pack')">अभी खरीदें</button>
+        </div>
+
+        <!-- प्रोडक्ट 3 -->
+        <div class="product-card">
+            <div class="product-icon">🏋️‍♂️</div>
+            <div class="product-title">Six-Pack Diet Plan</div>
+            <div class="product-desc">एब्स और कोर स्ट्रेंथ के लिए कड़क हाई-प्रोटीन डाइट गाइड।</div>
+            <div class="product-price">₹149</div>
+            <button class="buy-btn" onclick="buyProduct('Six-Pack Diet Plan')">अभी खरीदें</button>
+        </div>
+    </div>
+
+    <script>
+        function buyProduct(productName) {
+            alert("शुक्रिया! नितिन भाई का " + productName + " खरीदने के लिए। पेमेंट गेटवे जल्द ही लाइव होगा! 🔥");
+        }
+    </script>
+
+</body>
+  </html>
+  
