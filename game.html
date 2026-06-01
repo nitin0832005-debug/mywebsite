@@ -135,6 +135,11 @@
 </head>
 <body>
 
+    <!-- फ्री फायर बैकग्राउंड ट्यून के लिए ऑडियो (कॉपीराइट फ्री गेमिंग साउंड) -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    </audio>
+
     <div class="game-box" id="gameBox">
         <h1>FF MIND READER 🧠💥</h1>
         <p style="color: #ff4500; font-weight: bold; letter-spacing: 2px;">OB53 GRANDMASTER EDITION</p>
@@ -163,6 +168,11 @@
             cards.forEach(card => card.classList.remove('selected'));
             element.classList.add('selected');
             chosenItem = name;
+            
+            // जैसे ही कोई आइटम छुएगा, बैकग्राउंड में गेमिंग म्यूजिक शुरू हो जाएगा!
+            let music = document.getElementById("bgMusic");
+            music.volume = 0.2; // आवाज थोड़ी धीमी ताकि डिस्टर्ब न हो
+            music.play().catch(e => console.log("Music play blocked till user interaction"));
         }
 
         function startHack() {
@@ -195,6 +205,10 @@
             `;
             
             setTimeout(() => {
+                // रिजल्ट आते ही बैकग्राउंड म्यूजिक बंद कर देंगे ताकि वॉइस साफ सुनाई दे
+                let music = document.getElementById("bgMusic");
+                music.pause();
+
                 content.innerHTML = `
                     <div class="result-emoji">👑</div>
                     <h2 style="color: var(--ff-yellow); margin-top: 10px;">BOOYAH! 🎉</h2>
@@ -207,18 +221,16 @@
                     <p class="instruction" style="font-size: 1rem; color: #aaa;">है ना एकदम ग्रैंडमास्टर लेवल कोडिंग? 😉</p>
                     <button class="btn" onclick="location.reload()">दोबारा खेलें 🔄</button>
                 `;
-                // नतीजा आते ही अपने आप भी एक बार आवाज गूंजेगी!
                 speakResult();
             }, 1500);
         }
 
         function speakResult() {
             if ('speechSynthesis' in window) {
-                // हिंदी में बुलवाने के लिए टेक्स्ट तैयार किया
                 let textToSpeak = `बूयाह! नितिन भाई का जादू! आपके दोस्त ने मन में चुना था, ${chosenItem}!`;
                 let utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = 'hi-IN'; // हिंदी भाषा सेट की
-                utterance.rate = 0.9;     // थोड़ी नॉर्मल और कड़क स्पीड
+                utterance.lang = 'hi-IN';
+                utterance.rate = 0.9;
                 window.speechSynthesis.speak(utterance);
             } else {
                 alert("भाई, आपके ब्राउज़र में वॉइस सपोर्ट नहीं कर रहा है!");
